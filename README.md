@@ -100,3 +100,21 @@ trigger it with `"repurpose https://<any-url>"`. The agent will:
 ## License
 
 MIT — fork, rebrand, ship your own.
+
+## Day Trader skills (project-scoped)
+
+The 11 `trader-*` Claude Code skills from
+[Jakeschincariol/day-trader-skill](https://github.com/Jakeschincariol/day-trader-skill)
+(MIT, commit `3d0f4ef`) are installed in [`.claude/skills/`](./.claude/skills) for this project only
+(Method D in the setup guide). Rules live in [`trader/config.json`](./trader/config.json).
+
+> Educational only, not investment advice. `"paper": true` is on by default. Keep it on.
+
+1. Put your name and email in `sec_user_agent` in `trader/config.json` (or set `SEC_USER_AGENT`), or run `/trader-budget set my rules`.
+2. Try `/trader-scanner daily`.
+3. Scan, plan, then run `/trader-timemachine <TICKER>` before any trade.
+
+Skills: scanner, news, entry, exit, timemachine, budget, risk, broker, alerts, analyst, pelosi.
+Only `/trader-broker` can place an order, and only after a risk PASS, your typed yes, and an Allow once.
+Broker keys go in your Claude Desktop config, never in chat or in this repo.
+Update: re-clone the upstream repo and copy the `trader-*` folders over again.
