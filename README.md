@@ -110,6 +110,8 @@ The 11 `trader-*` Claude Code skills from
 
 > Educational only, not investment advice. `"paper": true` is on by default. Keep it on.
 
+Full setup guide, as accessible text: [`docs/day-trader-setup-guide.html`](./docs/day-trader-setup-guide.html).
+
 1. Put your name and email in `sec_user_agent` in `trader/config.json` (or set `SEC_USER_AGENT`), or run `/trader-budget set my rules`.
 2. Try `/trader-scanner daily`.
 3. Scan, plan, then run `/trader-timemachine <TICKER>` before any trade.

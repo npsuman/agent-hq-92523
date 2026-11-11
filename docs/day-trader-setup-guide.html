@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day Trader Skill Setup Guide</title>
+<meta name="description" content="Accessible text version of the Day Trader skill setup guide: eleven Claude Code skills for day trading US stocks, paper trading by default.">
+<style>
+  :root {
+    --bg: #faf6ef;
+    --surface: #fffdf8;
+    --text: #1f1c18;
+    --muted: #4f4a42;
+    --accent: #9a3d22;       /* 6.4:1 on --bg */
+    --border: #c9bfae;
+    --warn-bg: #fbe7e7;
+    --warn-text: #8a1c1c;
+    --code-bg: #efe8dc;
+    --good: #1d6b3a;
+    --bad: #a3242a;
+    --focus: #0b57d0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #181512; --surface: #221e1a; --text: #f3ede4; --muted: #c9c0b3;
+      --accent: #f0a080; --border: #4a423a; --warn-bg: #3a1d1d; --warn-text: #ffb3b3;
+      --code-bg: #2c2722; --good: #7fd69c; --bad: #ff9a9a; --focus: #8ab4f8;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #181512; --surface: #221e1a; --text: #f3ede4; --muted: #c9c0b3;
+    --accent: #f0a080; --border: #4a423a; --warn-bg: #3a1d1d; --warn-text: #ffb3b3;
+    --code-bg: #2c2722; --good: #7fd69c; --bad: #ff9a9a; --focus: #8ab4f8;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { font-size: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 1.0625rem; line-height: 1.6;
+  }
+  .skip-link {
+    position: absolute; left: 1rem; top: -4rem; z-index: 10;
+    background: var(--text); color: var(--bg); padding: .75rem 1rem; border-radius: .5rem;
+  }
+  .skip-link:focus { top: 1rem; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+  a { color: var(--accent); text-underline-offset: .15em; }
+  header, main, footer { max-width: 46rem; margin: 0 auto; padding: 0 1rem; }
+  header { padding-top: 2.5rem; }
+  h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; line-height: 1.2; }
+  h1 { font-size: clamp(2rem, 7vw, 3rem); margin: .25rem 0 1rem; }
+  h2 { font-size: 1.75rem; margin: 3rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  h3 { font-size: 1.25rem; margin: 1.5rem 0 .5rem; }
+  .eyebrow { text-transform: uppercase; letter-spacing: .08em; font-size: .875rem; color: var(--muted); margin: 0; }
+  .lede { font-size: 1.2rem; color: var(--muted); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: .75rem; padding: 1rem 1.25rem; margin: 1rem 0; }
+  .warn { background: var(--warn-bg); border-color: var(--warn-text); }
+  .warn > :first-child { color: var(--warn-text); margin-top: 0; }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .95em; }
+  code { background: var(--code-bg); padding: .1em .35em; border-radius: .3em; overflow-wrap: anywhere; }
+  pre { background: var(--code-bg); padding: 1rem; border-radius: .5rem; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+  pre code { background: none; padding: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  caption { text-align: left; font-weight: 600; padding-bottom: .5rem; }
+  th, td { text-align: left; padding: .5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th[scope="col"] { border-bottom: 2px solid var(--text); }
+  nav ol { columns: 2 14rem; padding-left: 1.25rem; }
+  nav li { margin: .25rem 0; break-inside: avoid; }
+  ol.steps > li, ul.checks > li { margin: .5rem 0; }
+  dl.skills dt { margin-top: 1.25rem; font-weight: 700; }
+  dl.skills dd { margin: .25rem 0 0; }
+  .good { color: var(--good); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  footer { padding: 3rem 1rem 2rem; color: var(--muted); font-size: .95rem; }
+  .theme-toggle { font: inherit; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: .5rem; padding: .4rem .8rem; cursor: pointer; float: right; }
+  @media print { .skip-link, .theme-toggle, nav { display: none; } }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header>
+  <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">Dark theme</button>
+  <p class="eyebrow">Eleven skills · Free · MIT license</p>
+  <h1>The Day Trader skill: setup guide</h1>
+  <p>Also known as Trader Skill v2.</p>
+  <p class="lede">Eleven Claude skills that scan the charts, read the news, time the entry, plan the exit and replay the odds.</p>
+  <ul>
+    <li>Price: $0. No signup, no API key.</li>
+    <li>11 skills.</li>
+    <li>Replays each trade 10,000 times.</li>
+    <li>Scans about 5,900 US stocks.</li>
+    <li>Source: <a href="https://github.com/Jakeschincariol/day-trader-skill">day-trader-skill on GitHub (Jakeschincariol/day-trader-skill)</a>. Tagline: “Look before you risk a dollar.”</li>
+  </ul>
+</header>
+
+<nav aria-labelledby="toc-heading" class="card" style="max-width:44rem;width:calc(100% - 2rem);margin:1.5rem auto;">
+  <h2 id="toc-heading" style="margin:0 0 .5rem;padding:0;border:0;font-size:1.25rem;">Contents</h2>
+  <ol>
+    <li><a href="#read-first">Read this first</a></li>
+    <li><a href="#what-you-need">What you need</a></li>
+    <li><a href="#install-a">Install: method A (easy)</a></li>
+    <li><a href="#install-bcd">Install: methods B, C and D</a></li>
+    <li><a href="#rules">Set your rules</a></li>
+    <li><a href="#skills">The eleven skills</a></li>
+    <li><a href="#one-trade">One trade, end to end</a></li>
+    <li><a href="#time-machine">The Time Machine</a></li>
+    <li><a href="#broker">Connect a broker</a></li>
+    <li><a href="#fixes">Quick fixes</a></li>
+    <li><a href="#get-it">Get the skill</a></li>
+  </ol>
+</nav>
+
+<main id="main">
+
+<section aria-labelledby="read-first">
+  <p class="eyebrow">Before anything else</p>
+  <h2 id="read-first">Read this first</h2>
+  <div class="card warn" role="note" aria-label="Warning">
+    <p><strong>Not financial advice.</strong></p>
+    <p>This is software that reads public data and does arithmetic. It cannot see the future. Most people who day trade lose money, and you can too.</p>
+  </div>
+  <ul>
+    <li><strong>No order without your yes.</strong> Only <code>/trader-broker</code> can lead to an order, and only after a risk PASS, your typed yes and your “Allow once”.</li>
+    <li><strong>Paper trading by default.</strong> <code>"paper": true</code> ships in the config. Stay on a paper account until you have watched it work.</li>
+    <li><strong>A simulation, not a prediction.</strong> The Time Machine learns from the last 60 days. An earnings report or a halt can do what those days never did.</li>
+    <li><strong>A stop is a plan, not a promise.</strong> In a fast market or across a gap, a stop can fill well past its price.</li>
+    <li><strong>Free data, unofficial.</strong> Yahoo’s chart data can lag or change. Check anything that matters with your broker.</li>
+  </ul>
+  <p class="card">From the guide’s author: “I’m sharing an open-source tool, not trading advice. I’m not a SEBI-registered adviser. If you need advice, talk to a licensed professional.”</p>
+</section>
+
+<section aria-labelledby="what-you-need">
+  <p class="eyebrow">Before you start</p>
+  <h2 id="what-you-need">What you need</h2>
+  <ul>
+    <li><strong>Claude Code</strong>: the terminal app, the desktop app or an IDE. The skills install and run here.</li>
+    <li><strong>Python 3.8 or newer.</strong> Claude runs the tools with it. Nothing to pip install. Check with <code>python3 --version</code>.</li>
+    <li><strong>Your name and email.</strong> The SEC tools (news filings, the analyst) ask who is reading. One line in your config.</li>
+    <li><strong>A paper broker account</strong> (optional, only to place paper orders): Alpaca or Interactive Brokers. See <a href="#broker">Connect a broker</a>.</li>
+  </ul>
+  <p>No signup. No API key. No pip install.</p>
+  <div class="card">
+    <h3>Built for US stocks</h3>
+    <p>It scans about 5,900 US-listed stocks and keeps New York time. The market opens at 9:30 AM there, which is 7 PM or 8 PM in India, depending on US daylight saving.</p>
+  </div>
+</section>
+
+<section aria-labelledby="install-a">
+  <p class="eyebrow">Method A · The easy way</p>
+  <h2 id="install-a">Install: paste, send, done</h2>
+  <ol class="steps">
+    <li>Paste the link into Claude Code: <code>https://github.com/Jakeschincariol/day-trader-skill</code></li>
+    <li>Type <kbd>install skill</kbd> and send.</li>
+    <li>Ready. Claude confirms something like “11 skills installed. Try /trader-scanner”. Wording varies; you want to see all eleven confirmed.</li>
+  </ol>
+  <h3>Then try it</h3>
+  <pre><code>/trader-scanner daily</code></pre>
+  <p>What <code>/trader-scanner</code> hands back:</p>
+  <ul class="checks">
+    <li>The US list, about 5,900 stocks, from Nasdaq Trader.</li>
+    <li>Setups from daily closes: 20-day breakouts, bull flags, oversold bounces.</li>
+    <li>Opening-range breakouts on 5-minute bars, while the market is open.</li>
+    <li>A watchlist that <code>/trader-news</code> and <code>/trader-entry</code> read next.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="install-bcd">
+  <p class="eyebrow">Methods B, C and D</p>
+  <h2 id="install-bcd">Prefer to do it yourself?</h2>
+  <h3>Method B: as a plugin (inside Claude Code)</h3>
+  <pre><code>/plugin marketplace add Jakeschincariol/day-trader-skill
+/plugin install day-trader-skill@day-trader-skill</code></pre>
+  <p>Plugin skills get a prefix, for example <code>/day-trader-skill:trader-scanner</code>.</p>
+  <h3>Method C: clone and copy (in your terminal)</h3>
+  <pre><code>mkdir -p ~/.claude/skills
+git clone https://github.com/Jakeschincariol/day-trader-skill.git
+cp -r day-trader-skill/trader-* ~/.claude/skills/</code></pre>
+  <p>You get the plain names, like <code>/trader-scanner</code>.</p>
+  <h3>Method D: one project only</h3>
+  <p>Copy the same <code>trader-*</code> folders into <code>.claude/skills/</code> inside your project instead. (This repository uses method D.)</p>
+  <div class="card">
+    <h3>Not sure? Use A.</h3>
+    <p>It does the copying for you. No Claude Code at all? Paste any one <code>SKILL.md</code> at the top of a chat and it runs as a mode, without the Python tools.</p>
+  </div>
+</section>
+
+<section aria-labelledby="rules">
+  <p class="eyebrow">Step 2 · Five minutes</p>
+  <h2 id="rules">Set your rules once</h2>
+  <p>Every trade is checked against one file in your project, <code>trader/config.json</code>.</p>
+  <h3>Fastest: let Claude ask you</h3>
+  <pre><code>/trader-budget set my rules</code></pre>
+  <h3>By hand: copy the example</h3>
+  <pre><code>mkdir -p trader
+cp ~/.claude/skills/trader-budget/config.example.json trader/config.json</code></pre>
+  <table>
+    <caption>The example values. Set your own.</caption>
+    <thead>
+      <tr><th scope="col">Setting</th><th scope="col">Config key</th><th scope="col">Example</th><th scope="col">What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">Budget</th><td><code>budget</code></td><td>$5,000</td><td>Only money you can afford to lose.</td></tr>
+      <tr><th scope="row">Max loss a trade</th><td><code>max_loss_per_trade_usd</code></td><td>$50</td><td>Decides how many shares.</td></tr>
+      <tr><th scope="row">Daily loss limit</th><td><code>max_daily_loss_usd</code></td><td>$150</td><td>No new trades after it.</td></tr>
+      <tr><th scope="row">Trades a day</th><td><code>max_trades_per_day</code></td><td>3</td><td>Then it blocks entries.</td></tr>
+      <tr><th scope="row">Entry window</th><td><code>no_entries_before</code>, <code>no_entries_after</code></td><td>09:45 to 15:30</td><td>New York time.</td></tr>
+      <tr><th scope="row">Flat by</th><td><code>flat_by</code></td><td>15:55</td><td>Out before the close.</td></tr>
+      <tr><th scope="row">Paper trading</th><td><code>paper</code></td><td>true</td><td>Keep it on.</td></tr>
+      <tr><th scope="row">Options, margin, short</th><td><code>allow_options</code>, <code>allow_margin</code>, <code>allow_short</code></td><td>off</td><td>Off unless you turn them on.</td></tr>
+    </tbody>
+  </table>
+  <p>Plus <code>"sec_user_agent": "Your Name you@example.com"</code> for the SEC tools.</p>
+</section>
+
+<section aria-labelledby="skills">
+  <p class="eyebrow">The eleven</p>
+  <h2 id="skills">The eleven skills: one job each</h2>
+  <dl class="skills">
+    <dt><code>/trader-scanner</code>: Chart Scanner</dt>
+    <dd>Scans thousands of US charts for setups: opening-range breakouts, flags, oversold bounces. Try <code>/trader-scanner orb --at 10:15</code></dd>
+    <dt><code>/trader-news</code>: News Monitor</dt>
+    <dd>Headlines and 8-K filings for every stock you watch, newest first, tagged by what moves it. Try <code>/trader-news TSLA</code></dd>
+    <dt><code>/trader-entry</code>: Entry Timer</dt>
+    <dd>Watches a setup bar by bar. Calls the entry on the first bar that closes above the range. Try <code>/trader-entry TSLA --setup orb</code></dd>
+    <dt><code>/trader-exit</code>: Exit Planner</dt>
+    <dd>Sets your stop and your target before you enter, and refuses a plan that makes no sense. Try <code>/trader-exit --stop or-mid --target 1R</code></dd>
+    <dt><code>/trader-timemachine</code>: Time Machine</dt>
+    <dd>Replays the rest of the day 10,000 times, plus every past day the same setup fired. Try <code>/trader-timemachine TSLA</code></dd>
+    <dt><code>/trader-budget</code>: Budget Manager</dt>
+    <dd>Sizes the trade to your max loss and writes one bracket order: entry, stop, target. Try <code>/trader-budget I only want to risk $50 a trade</code></dd>
+  </dl>
+  <h3>And the guards</h3>
+  <dl class="skills">
+    <dt><code>/trader-risk</code>: Risk Manager</dt>
+    <dd>Checks every order against your limits. PASS or BLOCK, with the reason. Try <code>/trader-risk check my order</code></dd>
+    <dt><code>/trader-broker</code>: Order Executor</dt>
+    <dd>Shows the ticket in plain words. Sends it only after your yes. Paper by default. Try <code>/trader-broker set up paper trading</code></dd>
+    <dt><code>/trader-alerts</code>: Price Alerts</dt>
+    <dd>Rings once on your stop, your target, the opening bell and your flat-by time. Try <code>/trader-alerts TSLA 370</code></dd>
+    <dt><code>/trader-analyst</code>: Earnings Analyst</dt>
+    <dd>Reads earnings straight from SEC filings and sums up what changed. Try <code>/trader-analyst TSLA</code></dd>
+    <dt><code>/trader-pelosi</code>: Pelosi Tracker</dt>
+    <dd>Reads Congress’s public stock-trade filings the minute they are posted. Try <code>/trader-pelosi pelosi</code></dd>
+  </dl>
+  <div class="card">
+    <h3>Each one reads what the last one wrote</h3>
+    <p>Everything lands in a <code>trader/</code> folder in your project: the watchlist, the plan, the order, the verdicts. You talk to Claude. Claude runs the Python.</p>
+  </div>
+</section>
+
+<section aria-labelledby="one-trade">
+  <p class="eyebrow">The example · Real data</p>
+  <h2 id="one-trade">One trade, end to end</h2>
+  <p>TSLA, Monday October 19 2026. Every number is from the repository’s own example.</p>
+  <ol class="steps">
+    <li><strong><code>/trader-scanner</code></strong> (10:15 AM): 42 of 231 charts had closed above their opening range. TSLA’s range: 354.47 to 362.18.</li>
+    <li><strong><code>/trader-news</code></strong> (8:04 AM): “Ahead of Earnings.” Tesla reports this week, so a day trade is out before the report.</li>
+    <li><strong><code>/trader-entry</code></strong> (10:15 AM): Triggered on the first 5-minute close above the range, 364.18.</li>
+    <li><strong><code>/trader-exit</code></strong> (the plan): Stop 358.32, the range midpoint. Target 370.04, one times the risk. Flat by 3:55 PM.</li>
+    <li><strong><code>/trader-timemachine</code></strong> (10,000 replays): Plus 59 real sessions. Verdict: close to a coin flip.</li>
+    <li><strong><code>/trader-budget</code></strong> (8 shares): $50 max loss divided by $5.86 risk a share. Loss at the stop: $46.88.</li>
+    <li><strong><code>/trader-risk</code></strong> (PASS): Max loss, daily limit, trades a day, reward to risk, entry window.</li>
+    <li><strong><code>/trader-broker</code></strong> (your yes): Shows the ticket. You type yes. Claude’s “Allow once” card asks again. Paper account.</li>
+  </ol>
+  <p>Then <code>/trader-alerts</code> watches it. It rings on the stop, the target and at 3:55 PM, to close whatever is still open.</p>
+</section>
+
+<section aria-labelledby="time-machine">
+  <p class="eyebrow">The craziest one</p>
+  <h2 id="time-machine">The Time Machine</h2>
+  <p>Before you risk a dollar, it replays the rest of the day 10,000 times from the stock’s own 5-minute bars.</p>
+  <pre><code>/trader-timemachine TSLA</code></pre>
+  <table>
+    <caption>10,000 replays: TSLA, October 19, seed 19</caption>
+    <thead><tr><th scope="col">Outcome</th><th scope="col">Share of replays</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Target hit first</th><td><span class="good">29.4%</span></td></tr>
+      <tr><th scope="row">Stop hit first</th><td><span class="bad">25.5%</span></td></tr>
+      <tr><th scope="row">Still open at the close</th><td>45.1%</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <caption>Same rule, 59 real sessions: it fired 33 times</caption>
+    <thead><tr><th scope="col">Outcome</th><th scope="col">Sessions</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Hit the target</th><td>13</td></tr>
+      <tr><th scope="row">Hit the stop</th><td>15</td></tr>
+      <tr><th scope="row">Neither</th><td>5</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Its verdict: close to a coin flip.</strong></p>
+  <p class="card"><strong>A simulation, not a prediction.</strong> The future can do things those 60 days never did. Treat the odds as a reality check, never as a promise.</p>
+</section>
+
+<section aria-labelledby="broker">
+  <p class="eyebrow">Optional · Paper first</p>
+  <h2 id="broker">Connect a broker</h2>
+  <p>Every order needs all three:</p>
+  <ol>
+    <li><strong>Risk PASS</strong> for this exact order.</li>
+    <li><strong>Your yes</strong>, typed in the chat.</li>
+    <li><strong>Allow once</strong>, on Claude’s own card.</li>
+  </ol>
+  <p><em>No yes, no order. Every order, every time.</em></p>
+  <h3>Setup steps</h3>
+  <ol class="steps">
+    <li><strong>Make paper API keys</strong> in the Alpaca dashboard. Paper keys are separate from live keys.</li>
+    <li><strong>Install uv.</strong> It gives you <code>uvx</code>, which runs Alpaca’s server. Instructions at <a href="https://docs.astral.sh/uv/">docs.astral.sh/uv</a>.</li>
+    <li><strong>Add the Alpaca server.</strong> Claude Desktop › Settings › Developer › Edit Config. Paste the block from <code>claude_desktop_config.example.json</code> and type your keys into that file.</li>
+    <li><strong>Restart, then lock it.</strong> Customize › Connectors › alpaca. Set <code>place_stock_order</code> to <strong>Needs approval</strong>. Never “Always allow”.</li>
+  </ol>
+  <div class="card warn" role="note" aria-label="Warning">
+    <p><strong>Keys never go in the chat.</strong></p>
+    <p>Pasted one by mistake? Delete the message and make new keys. On Interactive Brokers, add its connector from Customize › Connectors and approve orders inside IBKR too.</p>
+  </div>
+</section>
+
+<section aria-labelledby="fixes">
+  <p class="eyebrow">If it breaks</p>
+  <h2 id="fixes">Quick fixes</h2>
+  <h3><code>/trader-scanner</code> is not found</h3>
+  <p>Installed as a plugin? It’s <code>/day-trader-skill:trader-scanner</code>. Otherwise reopen Claude Code, then run <code>ls ~/.claude/skills | grep trader-</code></p>
+  <h3><code>python3: command not found</code></h3>
+  <p>Install Python 3.8 or newer from <a href="https://www.python.org/">python.org</a>. The tools need nothing else.</p>
+  <h3>The SEC tools ask who you are</h3>
+  <p>Add your name and email as <code>sec_user_agent</code> in <code>trader/config.json</code>, or set the <code>SEC_USER_AGENT</code> environment variable.</p>
+  <h3>Prices look late, or a scan stops</h3>
+  <p>Yahoo’s chart data is free and unofficial. It can lag or rate-limit you. Wait, retry, and trust your broker’s price.</p>
+  <h3>My broker still wants $25,000</h3>
+  <p>FINRA dropped the day-trader minimum on June 4 2026, but brokers can phase it in until October 2027. Set <code>"pdt_guard": true</code>.</p>
+  <h3>Update to the latest</h3>
+  <p>Paste the link again and ask Claude to update. Or <code>git pull</code> in your clone and copy the folders again.</p>
+</section>
+
+<section aria-labelledby="get-it">
+  <p class="eyebrow">The link</p>
+  <h2 id="get-it">Get the skill</h2>
+  <p><a href="https://github.com/Jakeschincariol/day-trader-skill">day-trader-skill on GitHub</a>: eleven Claude skills for day trading. Free, open source (MIT license), paper by default.</p>
+  <h3>Your first ten minutes</h3>
+  <ol class="steps">
+    <li>Paste the link into Claude Code and type <kbd>install skill</kbd>.</li>
+    <li>Run <code>/trader-budget set my rules</code>. Leave paper on.</li>
+    <li>Scan, plan, then run <code>/trader-timemachine</code> before any trade.</li>
+  </ol>
+  <p><strong>Look before you risk a dollar. Paper first.</strong></p>
+</section>
+
+</main>
+
+<footer>
+  <p>Educational only. Not investment advice. Not a SEBI-registered adviser.</p>
+  <p>Accessible text version of the 13-page setup guide by @shashwat___agarwal. The skills are by Jake Schincariol, MIT license.</p>
+</footer>
+
+<script>
+  (function () {
+    var btn = document.getElementById('theme-toggle');
+    var root = document.documentElement;
+    function isDark() {
+      var t = root.getAttribute('data-theme');
+      return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    function sync() {
+      var dark = isDark();
+      btn.setAttribute('aria-pressed', String(dark));
+    }
+    try { var saved = localStorage.getItem('theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+    sync();
+    btn.addEventListener('click', function () {
+      var next = isDark() ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      sync();
+    });
+  })();
+</script>
+</body>
+</html>
